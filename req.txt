@@ -1,0 +1,10 @@
+django==
+djangorestframework==
+django-cors-headers==
+sklearn==
+experta==
+h5py==2.10.0
+Pillow==9.1.1
+protobuf==3.19.1
+tensorflow==1.15.0
+keras==2.3.1
