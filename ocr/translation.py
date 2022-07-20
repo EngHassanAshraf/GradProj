@@ -16,9 +16,7 @@ class Dictionary:
         for i in  range(len(dictionary)):
             avaliable_Translations.append(dictionary[i]['name'].casefold())
         return avaliable_Translations
-
-def translationDriver():
-    ocrResult = ocr.get_result()
+def addNewTranslations():
     Dictionary().add_Translation({"name":'White Blood Count', "translation":'كرات الدم البيضاء'}),
     Dictionary().add_Translation({"name":'White Cell Count', "translation":'كرات الدم البيضاء'}),
     Dictionary().add_Translation({"name":'WBC', "translation":'كرات الدم البيضاء'}),
@@ -102,7 +100,11 @@ def translationDriver():
     Dictionary().add_Translation({"name":'Serum Potassium',   "translation":'مصل البوتاسيوم'}),
     Dictionary().add_Translation({"name":'Serum Sodium',   "translation":'مصل الصوديم'}),
 
+def translationDriver():
+    ocrResult = ocr.get_result()
+    addNewTranslations()
     global translated_ocr
+    translated_ocr.clear()
     for key in ocrResult.keys():
         if key.replace('_',' ') in Dictionary().get_avaliable_Translations():
             translationIndex = Dictionary().get_avaliable_Translations().index(key.replace('_',' '))

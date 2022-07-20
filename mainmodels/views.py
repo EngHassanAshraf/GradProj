@@ -139,9 +139,10 @@ class OCRCallAll(APIView):
                         "results":{'Has Covid?':"None"}
         },
         })
-        
+        finalRes = self.getfinalResponse()
         print(f"from callall {ocrresult}")
-        return Response(self.getfinalResponse())
+        print(finalRes)
+        return Response(finalRes)
     
 class EnteredValuesCallAll(APIView):
     def get(self, request):
