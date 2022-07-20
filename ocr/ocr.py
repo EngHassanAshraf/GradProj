@@ -22,6 +22,7 @@ def dictionaryResult(preResult):
         if item.count(' ') > 1:
             item = item.replace(' ','_',item.count(' ')-1)
         analysisValues[item[:item.find(' ')]] = item[item.find(' ')+1:]
+        
     return analysisValues
 finalresult = dict()
 def set_result(ocrFinalResult):
@@ -31,7 +32,7 @@ def set_result(ocrFinalResult):
 def get_result():
     return finalresult
 
-def driver(imagePath):
+def ocrDriver(imagePath):
     img = cv2.imread(imagePath)
     gray_image = grayscale(img)
     thresh, im_bw = cv2.threshold(gray_image, 150, 160, cv2.THRESH_BINARY)

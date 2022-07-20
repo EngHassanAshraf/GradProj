@@ -1,8 +1,9 @@
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import AnalysisImage
-from .ocr import driver, get_result
-
+from .ocr import ocrDriver, get_result
+from .translation import translationDriver, get_translated_ocr
 class OCR(APIView):
     def get(self, request):
         return Response({"":""})
@@ -13,7 +14,9 @@ class OCR(APIView):
             print(f"image: {recvedimg}")
         except Exception as e:
             print(e)
-        driver(f"media/{recvedimg}")
+        ocrDriver(f"media/{recvedimg}")
         ocrresults = get_result()
         print(f" from ocr {ocrresults}")
-        return Response(ocrresults)
+        translationDriver()
+        print(get_translated_ocr())
+        return JsonResponse(get_translated_ocr(), safe=False)

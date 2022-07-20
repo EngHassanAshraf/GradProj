@@ -21,6 +21,26 @@ from .models import LeukemiaImage
 # import ocr package from ocr app
 from ocr import ocr
 
+hemoVar = [
+    "hemoglobin",
+    "hgb",
+    "hb"
+]
+wbcVar = [
+    "white_cell_count",
+    "white_blood_cell",
+    "wbc",
+    "wbcs"    
+]
+motVar = [
+    "monocytes",
+    "mono",
+]
+lytVar = [
+    "lymphocytes",
+    'lymph',
+]
+
 age = None
 gender = None
 ocrresult = dict()
@@ -35,14 +55,24 @@ class BasicInfo(APIView):
 class OCRCallAll(APIView):
     def getfinalResponse(self):
         global age, gender, ocrresult
-        if len(ocrresult)<=0: return 
-        hemoglobin = ocrresult["hemoglobin"]
+        if len(ocrresult)<=0: return
+        
+        for item in hemoVar:
+            if item in ocrresult:
+                hemoglobin = ocrresult[item]
         mch = ocrresult["mch"]
         mchc = ocrresult["mchc"]
         mcv = ocrresult["mcv"]
-        wbc = ocrresult["white_cell_count"]
-        mot = ocrresult["monocytes"]
-        lyt = ocrresult["lymphocytes"]
+        for item in wbcVar:
+            if item in ocrresult:
+                wbc = ocrresult[item]
+        for item in motVar:
+            if item in ocrresult:
+                mot = ocrresult[item]
+        for item in lytVar:
+            if item in ocrresult:
+                lyt = ocrresult[item]
+
         anemiaresponse = ""
         covidresponse = ""
         # startAnemia()
@@ -83,30 +113,18 @@ class OCRCallAll(APIView):
         elif covidprediction[0] == [1]:
             covidresponse = 'Found Covid'
     
-        return {"Anemia Test":{
-                        "hemoglobin":f"{hemoglobin}",
-                        "mch":f"{mch}",
-                        "mchc":f"{mchc}",
-                        "mcv":f"{mcv}",
-                        "gender":f"{gender}",
-                        "results":{'Has Anemia?':f"{anemiaresponse}"}
-        },
-        "Covid Test":{
-                        "wbc":f"{wbc}",
-                        "mot":f"{mot}",
-                        "lyt":f"{lyt}",
-                        "age":f"{age}",
-                        "results":{'Has Covid?':f"{covidresponse}"}
-        },
+        return {
+            "Anemia Test":f"{anemiaresponse}",
+            "Covid Test":f"{covidresponse}"
         }
     
     def get(self, request):
         global ocrresult
         ocrresult = ocr.get_result()
         if len(ocrresult) == 0:
-            print(f"from callall {ocrresult}") 
+            print(f"from callall {ocrresult}")
             return Response({"Anemia Test":{
-                        "hemoglobin":"None",
+                        "hgb":"None",
                         "mch":"None",
                         "mchc":"None",
                         "mcv":"None",
@@ -124,6 +142,7 @@ class OCRCallAll(APIView):
         
         print(f"from callall {ocrresult}")
         return Response(self.getfinalResponse())
+    
 class EnteredValuesCallAll(APIView):
     def get(self, request):
         return Response({"Anemia Test":{
@@ -191,22 +210,11 @@ class EnteredValuesCallAll(APIView):
         elif covidprediction[0] == [1]:
             covidresponse = 'Found Covid'
     
-        return Response({"Anemia Test":{
-                        "hemoglobin":f"{hemoglobin}",
-                        "mch":f"{mch}",
-                        "mchc":f"{mchc}",
-                        "mcv":f"{mcv}",
-                        "gender":f"{gender}",
-                        "results":{'Has Anemia?':f"{anemiaresponse}"}
-        },
-        "Covid Test":{
-                        "wbc":f"{wbc}",
-                        "mot":f"{mot}",
-                        "lyt":f"{lyt}",
-                        "age":f"{age}",
-                        "results":{'Has Covid?':f"{covidresponse}"}
-        },
+        return Response({
+            "Anemia Test":f"{anemiaresponse}",
+            "Covid Test":f"{covidresponse}"
         })
+
 class CallLeukemia(APIView):
     def get(self, request):
         return Response("Wiat Image")
@@ -242,7 +250,7 @@ class CallLeukemia(APIView):
                     #GET CLASSIFICATION RESULT#
                     if classes == [0]: response = 'No Leukemia'
                     elif classes == [1]: response = 'Found Leukemia'
-                    finalResponse = {"results":{'Has Leukemia?':f"{response}"}}
+                    finalResponse = {'Leukemia Test':f"{response}"}
                     #CLASSIFICATION RESULT#
                     
                 except Exception as e:
