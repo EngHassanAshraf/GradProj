@@ -229,7 +229,7 @@ class CallLeukemia(APIView):
         #END DO IMAGE WORK#
         
         #START DO MODEL WORK#
-        LeukemiaModelPath = os.path.join(r'mainmodels\mlmodels\leukemia', 'leukemia.h5')
+        LeukemiaModelPath = os.path.join(r'mainmodels/mlmodels/leukemia', 'leukemia.h5')
         leukemiaclassifier = load_model(LeukemiaModelPath)
         leukemiaclassifier.compile(loss='binary_crossentropy',
         optimizer='rmsprop',
