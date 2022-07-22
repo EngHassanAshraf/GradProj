@@ -4,7 +4,9 @@ from rest_framework.response import Response
 from .models import AnalysisImage
 from .ocr import ocrDriver, get_result
 from .translation import translationDriver, get_translated_ocr
+from rest_framework.parsers import MultiPartParser
 class OCR(APIView):
+    parser_classes = [MultiPartParser]
     def get(self, request):
         return Response({"":""})
     def post(self, request):
