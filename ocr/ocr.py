@@ -43,7 +43,7 @@ def ocrDriver(imagePath):
     custom_config = r'-c preserve_interword_spaces=5 --oem 3 --psm 4 -l eng'
     extracted_text = pytesseract.image_to_string(final_image ,config=custom_config)
 
-    pattern=r'[A-z]+\s?[A-z]*\s?[A-z]*\s?[0-9]+\.?[0-9]*'
+    pattern=r'[A-z]+\s?[\(?A-z\)*]*\s?[\(?A-z\)?]*\s?[0-9]+\.?[0-9]*'
 
     nlp=spacy.blank('en')
     doc=nlp(extracted_text)

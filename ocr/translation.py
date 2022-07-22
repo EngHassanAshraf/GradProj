@@ -108,10 +108,10 @@ def translationDriver():
     for key in ocrResult.keys():
         if key.replace('_',' ') in Dictionary().get_avaliable_Translations():
             translationIndex = Dictionary().get_avaliable_Translations().index(key.replace('_',' '))
-            Dictionary().get_Dictionary()[translationIndex]['value'] = ocrResult[key]
+            Dictionary().get_Dictionary()[translationIndex]['value'] = str(ocrResult[key])
             translated_ocr.append(Dictionary().get_Dictionary()[translationIndex])
         else:
-            translated_ocr.append({"name":key.replace('_',' '), "translation":"لا توجد ترجمة", "vlaue": ocrResult[key]})
+            translated_ocr.append({"name":key.replace('_',' '), "translation":"لا توجد ترجمة", "vlaue": str(ocrResult[key])})
     
 def get_translated_ocr():
     return translated_ocr
