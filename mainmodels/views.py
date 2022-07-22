@@ -7,16 +7,18 @@ from rest_framework.response import Response
 
 # for supporting machine learning and deep learning part
 # that mentioned in chapter #
-from keras.models import load_model
-from keras.preprocessing import image
-import numpy as np
+
+# from keras.models import load_model
+# from keras.preprocessing import image
+# import numpy as np
 
 # importing loaded Ml-models from apps package
 from .apps import AnemiaClassifierConfig, CovidClassifierConfig
 
 # importing leukemia images table from database
 #to add and get images
-from .models import LeukemiaImage
+
+# from .models import LeukemiaImage
 
 # import ocr package from ocr app
 from ocr import ocr
@@ -216,57 +218,57 @@ class EnteredValuesCallAll(APIView):
             "Covid Test":f"{covidresponse}"
         })
 
-class CallLeukemia(APIView):
-    def get(self, request):
-        return Response("Wiat Image")
-    def post(self, request):
-        #START DO IMAGE WORK#
-        leukemiaimage = request.FILES['image']
-        recvedImage = LeukemiaImage.objects.create(
-            imagetitle=str(leukemiaimage),
-            leukemiaimage=leukemiaimage
-            )
-        #END DO IMAGE WORK#
+# class CallLeukemia(APIView):
+#     def get(self, request):
+#         return Response("Wiat Image")
+#     def post(self, request):
+#         #START DO IMAGE WORK#
+#         leukemiaimage = request.FILES['image']
+#         recvedImage = LeukemiaImage.objects.create(
+#             imagetitle=str(leukemiaimage),
+#             leukemiaimage=leukemiaimage
+#             )
+#         #END DO IMAGE WORK#
         
-        #START DO MODEL WORK#
-        LeukemiaModelPath = os.path.join(r'mainmodels/mlmodels/leukemia', 'leukemia.h5')
-        leukemiaclassifier = load_model(LeukemiaModelPath)
-        leukemiaclassifier.compile(loss='binary_crossentropy',
-        optimizer='rmsprop',
-        metrics=['accuracy'])
-        #END DO MODEL WORK#
+#         #START DO MODEL WORK#
+#         LeukemiaModelPath = os.path.join(r'mainmodels/mlmodels/leukemia', 'leukemia.h5')
+#         leukemiaclassifier = load_model(LeukemiaModelPath)
+#         leukemiaclassifier.compile(loss='binary_crossentropy',
+#         optimizer='rmsprop',
+#         metrics=['accuracy'])
+#         #END DO MODEL WORK#
         
-        #START CLASSIFICATION#
-        if LeukemiaImage.objects.all():
-            imagePath = f"media/{recvedImage}"
-            try:
-                #START IMAGE PREPROCESSING#
-                img = image.load_img(imagePath, target_size=(150, 150))
-                x = image.img_to_array(img)
-                x = np.expand_dims(x, axis=0)
-                finalimage = np.vstack([x])
-                classes = leukemiaclassifier.predict_classes(finalimage, batch_size=10)
-                #END IMAGE PREPROCESSING#
-                try:
-                    #GET CLASSIFICATION RESULT#
-                    if classes == [0]: response = 'No Leukemia'
-                    elif classes == [1]: response = 'Found Leukemia'
-                    finalResponse = {'Leukemia Test':f"{response}"}
-                    #CLASSIFICATION RESULT#
+#         #START CLASSIFICATION#
+#         if LeukemiaImage.objects.all():
+#             imagePath = f"media/{recvedImage}"
+#             try:
+#                 #START IMAGE PREPROCESSING#
+#                 img = image.load_img(imagePath, target_size=(150, 150))
+#                 x = image.img_to_array(img)
+#                 x = np.expand_dims(x, axis=0)
+#                 finalimage = np.vstack([x])
+#                 classes = leukemiaclassifier.predict_classes(finalimage, batch_size=10)
+#                 #END IMAGE PREPROCESSING#
+#                 try:
+#                     #GET CLASSIFICATION RESULT#
+#                     if classes == [0]: response = 'No Leukemia'
+#                     elif classes == [1]: response = 'Found Leukemia'
+#                     finalResponse = {'Leukemia Test':f"{response}"}
+#                     #CLASSIFICATION RESULT#
                     
-                except Exception as e:
-                    print("Error: " + str(e))
-                    finalResponse = {"results":{'Has Leukemia?':"none"}}
-                print(f"Respones is :\n{finalResponse}\n")
-                return Response(finalResponse)
-            except:
-                finalResponse = {"results":"Image Not sent correctly or not found in the given path"}
-                print(f"Respones is :\n{finalResponse}\n")
-                return Response(finalResponse)
-        else:
-            finalResponse = {"results":"Image Not sent correctly or not found in the data base"}
-            print(f"Respones is :\n{finalResponse}\n")
-            return Response(finalResponse)
+#                 except Exception as e:
+#                     print("Error: " + str(e))
+#                     finalResponse = {"results":{'Has Leukemia?':"none"}}
+#                 print(f"Respones is :\n{finalResponse}\n")
+#                 return Response(finalResponse)
+#             except:
+#                 finalResponse = {"results":"Image Not sent correctly or not found in the given path"}
+#                 print(f"Respones is :\n{finalResponse}\n")
+#                 return Response(finalResponse)
+#         else:
+#             finalResponse = {"results":"Image Not sent correctly or not found in the data base"}
+#             print(f"Respones is :\n{finalResponse}\n")
+#             return Response(finalResponse)
 
 class Routing(APIView):
     def get(self, request):
