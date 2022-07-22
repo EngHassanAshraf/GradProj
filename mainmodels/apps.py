@@ -21,7 +21,8 @@ class ModelConfig(AppConfig):
     
 class AnemiaClassifierConfig(AppConfig):
     # create path to model
-    path = os.path.join(r'C:\Users\Un-Known\Desktop\GradProj\mainmodels\mlmodels', 'anemia.p')
+    path = os.path.join(r'mainmodels\mlmodels', 'anemia.p')
+    # path = os.path.join(r'C:\Users\Un-Known\Desktop\GradProj\mainmodels\mlmodels', 'anemia.p')
     
     # load model into separate variables
     # these will be accessible via this class
@@ -31,7 +32,8 @@ class AnemiaClassifierConfig(AppConfig):
 
 class CovidClassifierConfig(AppConfig):
     # create path to model
-    path = os.path.join(r'C:\Users\Un-Known\Desktop\GradProj\mainmodels\mlmodels', 'covid.p')
+    path = os.path.join(r'mainmodels\mlmodels', 'covid.p')
+    # path = os.path.join(r'C:\Users\Un-Known\Desktop\GradProj\mainmodels\mlmodels', 'covid.p')
     
     # load mlmodel into separate variables
     # these will be accessible via this class
